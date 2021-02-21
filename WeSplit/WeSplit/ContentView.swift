@@ -8,20 +8,38 @@
 import SwiftUI
 
 struct ContentView: View {
-    let students = ["Harry", "Hermione", "Ron"]
-        @State private var selectedStudent = 0
+    @State var checkAmount = ""
+    @State var numberOfPeople = 2
+    @State var tipPercentage = 2
+    let tipPercentages = [10, 15, 20, 25, 0]
+    
     var body: some View {
-        VStack {
-            Picker("Select your student", selection: $selectedStudent) {
-                ForEach (0 ..< students.count) {
-                    Text(self.students[$0])
+        NavigationView {
+        
+            Form {
+                Section {
+                    TextField("Amount", text: $checkAmount)
+                        .keyboardType(.decimalPad)
+                    Picker("Number of people", selection: $numberOfPeople) {
+                        ForEach(2 ..< 100) {
+                            Text("\($0) people")
+                        }
+                    }
+                }
+                Section(header: Text("How much tip do you want to leave?")) {
+                   
+                    Picker("Tip percentage", selection: $tipPercentage) {
+                        ForEach(0 ..< tipPercentages.count) {
+                            Text(" \(self.tipPercentages[$0])%")
+                        }
+                    }
+                    .pickerStyle(SegmentedPickerStyle())
                 }
             }
-            Text("You chose: Student # \(students[selectedStudent])")
+            .navigationBarTitle("WeSplit")
         }
     }
 }
-
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
